@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreeCodeCamp Portfolio - API Documentation</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      width: 100%;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      padding: 40px;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 2.5em;
+    }
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 1.1em;
+    }
+    .api-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+    .api-card {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 24px;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 2px solid transparent;
+    }
+    .api-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      border-color: #667eea;
+    }
+    .api-card h3 {
+      color: #667eea;
+      margin-bottom: 8px;
+      font-size: 1.3em;
+    }
+    .api-card p {
+      color: #666;
+      font-size: 0.95em;
+      line-height: 1.5;
+    }
+    .badge {
+      display: inline-block;
+      background: #667eea;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8em;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>FreeCodeCamp Portfolio</h1>
+    <p class="subtitle">Interactive API Documentation - Auto-generated from Express routes</p>
+    
+    <div class="api-grid">
+      <a href="exercise-tracker/docs/index.html" class="api-card">
+        <h3>Exercise Tracker</h3>
+        <p>Track exercises with user management, logging, and filtering</p>
+        <span class="badge">MongoDB + Express</span>
+      </a>
+      
+      <a href="file-metadata/docs/index.html" class="api-card">
+        <h3>File Metadata</h3>
+        <p>Upload files and retrieve metadata information</p>
+        <span class="badge">Multer + Express</span>
+      </a>
+      
+      <a href="header-parser/docs/index.html" class="api-card">
+        <h3>Header Parser</h3>
+        <p>Parse HTTP request headers for client information</p>
+        <span class="badge">Express</span>
+      </a>
+      
+      <a href="timestamp/docs/index.html" class="api-card">
+        <h3>Timestamp</h3>
+        <p>Convert dates between Unix timestamps and UTC format</p>
+        <span class="badge">Express</span>
+      </a>
+      
+      <a href="url-shortener/docs/index.html" class="api-card">
+        <h3>URL Shortener</h3>
+        <p>Shorten URLs and redirect to original links</p>
+        <span class="badge">Express</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>
