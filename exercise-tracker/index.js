@@ -5,6 +5,10 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
+// Swagger Documentation
+const { swaggerUi, specs } = require("./swagger");
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+
 mongoose.connect(process.env.MONGO_URI);
 
 const LogSchema = new mongoose.Schema({
@@ -29,6 +33,35 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
 });
 
+/**
+ * @swagger
+ * /api/users:
+ *   post:
+ *     summary: Create a new user
+ *     description: Creates a new user account for tracking exercises
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: The username for the new account
+ *     responses:
+ *       200:
+ *         description: User created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 username:
+ *                   type: string
+ *                 _id:
+ *                   type: string
+ */
 app.post("/api/users/", function (req, res) {
   const log = new Log({
     username: req.body.username,
@@ -39,6 +72,27 @@ app.post("/api/users/", function (req, res) {
   res.json({ username: log.username, _id: log._id });
 });
 
+/**
+ * @swagger
+ * /api/users:
+ *   get:
+ *     summary: Get all users
+ *     description: Retrieves a list of all registered users
+ *     responses:
+ *       200:
+ *         description: List of users retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   username:
+ *                     type: string
+ *                   _id:
+ *                     type: string
+ */
 app.get("/api/users/", function (req, res) {
   Log.find()
     .select("username _id")
@@ -52,6 +106,52 @@ app.get("/api/users/", function (req, res) {
     });
 });
 
+/**
+ * @swagger
+ * /api/users/{_id}/exercises:
+ *   post:
+ *     summary: Add an exercise
+ *     description: Adds a new exercise to a user's log
+ *     parameters:
+ *       - in: path
+ *         name: _id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               description:
+ *                 type: string
+ *               duration:
+ *                 type: integer
+ *               date:
+ *                 type: string
+ *                 format: date
+ *     responses:
+ *       200:
+ *         description: Exercise added successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 username:
+ *                   type: string
+ *                 description:
+ *                   type: string
+ *                 duration:
+ *                   type: integer
+ *                 date:
+ *                   type: string
+ *                 _id:
+ *                   type: string
+ */
 app.post("/api/users/:_id/exercises", function (req, res) {
   Log.findById(req.params._id).then((user) => {
     const date = new Date(req.body.date).toDateString();
@@ -74,6 +174,62 @@ app.post("/api/users/:_id/exercises", function (req, res) {
   });
 });
 
+/**
+ * @swagger
+ * /api/users/{_id}/logs:
+ *   get:
+ *     summary: Get exercise logs
+ *     description: Retrieves a user's exercise log with optional filtering
+ *     parameters:
+ *       - in: path
+ *         name: _id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user ID
+ *       - in: query
+ *         name: from
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: Start date filter (YYYY-MM-DD)
+ *       - in: query
+ *         name: to
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: End date filter (YYYY-MM-DD)
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         description: Maximum number of logs to return
+ *     responses:
+ *       200:
+ *         description: Exercise logs retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 username:
+ *                   type: string
+ *                 count:
+ *                   type: integer
+ *                 _id:
+ *                   type: string
+ *                 log:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       description:
+ *                         type: string
+ *                       duration:
+ *                         type: integer
+ *                       date:
+ *                         type: string
+ */
 app.get("/api/users/:_id/logs", function (req, res) {
   if (req.query.from || req.query.to || req.query.limit) {
     let from = new Date(req.query.from ? req.query.from : 0);
