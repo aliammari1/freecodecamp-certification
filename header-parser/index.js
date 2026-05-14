@@ -6,6 +6,10 @@ require("dotenv").config();
 var express = require("express");
 var app = express();
 
+// Swagger Documentation
+const { swaggerUi, specs } = require("./swagger");
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC
 var cors = require("cors");
@@ -24,6 +28,30 @@ app.get("/api/hello", function (req, res) {
   res.json({ greeting: "hello API" });
 });
 
+/**
+ * @swagger
+ * /api/whoami:
+ *   get:
+ *     summary: Get requester information
+ *     description: Returns IP address, language, and software info from request headers
+ *     responses:
+ *       200:
+ *         description: Requester information retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 ipaddress:
+ *                   type: string
+ *                   description: Client IP address
+ *                 language:
+ *                   type: string
+ *                   description: Accepted languages
+ *                 software:
+ *                   type: string
+ *                   description: User agent string
+ */
 app.get("/api/whoami", function (req, res) {
   res.json({
     ipaddress: req.headers["x-forwarded-for"],
