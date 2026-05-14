@@ -1,0 +1,46 @@
+---
+title: 'Header Parser API'
+description: 'API documentation for the Request Header Parser microservice'
+---
+
+# Header Parser API
+
+A microservice that parses HTTP request headers and returns client information.
+
+## Base URL
+
+```
+http://localhost:3000
+```
+
+## Endpoints
+
+### Get Requester Info
+
+```http
+GET /api/whoami
+```
+
+Returns information about the client making the request.
+
+**Example Response:**
+
+```json
+{
+  "ipaddress": "192.168.1.1",
+  "language": "en-US,en;q=0.9",
+  "software": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+}
+```
+
+## Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| ipaddress | string | Client IP address from X-Forwarded-For header |
+| language | string | Accepted languages from Accept-Language header |
+| software | string | User agent string |
+
+## Interactive Documentation
+
+Visit `/api-docs` when the server is running to explore the API with Swagger UI.

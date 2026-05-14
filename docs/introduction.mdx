@@ -1,0 +1,57 @@
+---
+title: Introduction
+description: 'FreeCodeCamp Backend API Portfolio - A collection of microservices built for the freeCodeCamp curriculum'
+---
+
+# FreeCodeCamp Portfolio
+
+Welcome to the FreeCodeCamp Backend API Portfolio! This monorepo contains five microservice APIs built as part of the freeCodeCamp Back End Development and APIs certification.
+
+## What's Inside
+
+This portfolio demonstrates fundamental backend development concepts through practical, working APIs:
+
+<CardGroup cols={2}>
+  <Card title="Exercise Tracker" icon="running" href="api-reference/exercise-tracker">
+    Track exercises with user management, logging, and filtering
+  </Card>
+  <Card title="File Metadata" icon="file" href="api-reference/file-metadata">
+    Upload files and retrieve metadata information
+  </Card>
+  <Card title="Header Parser" icon="globe" href="api-reference/header-parser">
+    Parse HTTP request headers for client information
+  </Card>
+  <Card title="Timestamp" icon="clock" href="api-reference/timestamp">
+    Convert dates between Unix timestamps and UTC format
+  </Card>
+  <Card title="URL Shortener" icon="link" href="api-reference/url-shortener">
+    Shorten URLs and redirect to original links
+  </Card>
+</CardGroup>
+
+## Features
+
+- **RESTful APIs** - Clean, predictable resource-oriented endpoints
+- **Interactive Documentation** - Swagger UI available at `/api-docs` for each service
+- **Cross-Origin Support** - CORS enabled for client-side testing
+- **Modern Tooling** - Migrated to Bun for fast installs and builds
+
+## Quick Start
+
+Each API is self-contained and can be run independently. Check out the [Quickstart](/quickstart) guide to get up and running in minutes.
+
+## Architecture
+
+```
+freecodecamp-portfolio/
+├── exercise-tracker/     # MongoDB + Express exercise tracking API
+├── file-metadata/        # File upload and metadata extraction
+├── header-parser/        # HTTP header parsing microservice
+├── timestamp/            # Date conversion microservice
+├── url-shortener/        # URL shortening microservice
+└── docs/                 # Mintlify documentation
+```
+
+## License
+
+This project uses a [Custom Source-Available License](https://github.com/aliammari1/freecodecamp-portfolio/blob/main/LICENSE) that allows personal, educational, and non-commercial use. Commercial use requires explicit written permission.

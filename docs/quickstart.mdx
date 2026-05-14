@@ -1,0 +1,104 @@
+---
+title: Quickstart
+description: 'Get started with the FreeCodeCamp Portfolio APIs in minutes'
+---
+
+# Quickstart
+
+## Prerequisites
+
+- [Bun](https://bun.sh/) installed on your system
+- Git for cloning the repository
+
+## Installation
+
+1. **Clone the repository**
+
+```bash
+git clone https://github.com/aliammari1/freecodecamp-portfolio.git
+cd freecodecamp-portfolio
+```
+
+2. **Install dependencies for a specific API**
+
+```bash
+cd exercise-tracker
+bun install
+```
+
+3. **Set up environment variables**
+
+```bash
+cp sample.env .env
+# Edit .env with your configuration
+```
+
+4. **Start the development server**
+
+```bash
+bun run dev
+```
+
+## API Documentation
+
+Each API includes interactive Swagger documentation. Once running, visit:
+
+```
+http://localhost:3000/api-docs
+```
+
+## Testing the APIs
+
+### Exercise Tracker
+
+```bash
+# Create a user
+curl -X POST http://localhost:3000/api/users \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "username=johndoe"
+
+# Add exercise
+curl -X POST http://localhost:3000/api/users/USER_ID/exercises \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "description=Running&duration=30&date=2024-01-01"
+```
+
+### Timestamp
+
+```bash
+# Convert date
+curl http://localhost:3000/api/2024-01-01
+
+# Current time
+curl http://localhost:3000/api/
+```
+
+### URL Shortener
+
+```bash
+# Shorten URL
+curl -X POST http://localhost:3000/api/shorturl \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "url=https://www.example.com"
+```
+
+## Project Structure
+
+Each API follows the same structure:
+
+```
+project-name/
+├── index.js          # Main Express application
+├── swagger.js        # Swagger documentation config
+├── package.json      # Dependencies and scripts
+├── bun.lock          # Bun lockfile
+├── public/           # Static assets
+├── views/            # HTML templates
+└── .env              # Environment variables
+```
+
+## Next Steps
+
+- Explore the [API Reference](/api-reference) for detailed endpoint documentation
+- Check out the interactive Swagger UI at `/api-docs` when running any API
+- Review the source code on [GitHub](https://github.com/aliammari1/freecodecamp-portfolio)

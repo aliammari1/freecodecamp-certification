@@ -1,0 +1,90 @@
+---
+title: 'URL Shortener API'
+description: 'API documentation for the URL Shortener microservice'
+---
+
+# URL Shortener API
+
+A microservice for shortening URLs and redirecting to original links.
+
+## Base URL
+
+```
+http://localhost:3000
+```
+
+## Endpoints
+
+### Create Short URL
+
+```http
+POST /api/shorturl
+```
+
+Creates a shortened URL from a valid URL.
+
+**Request Body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| url | string | Yes | Valid URL to shorten |
+
+**Example Response (Success):**
+
+```json
+{
+  "original_url": "https://www.example.com",
+  "short_url": 1
+}
+```
+
+**Example Response (Error):**
+
+```json
+{
+  "error": "invalid url"
+}
+```
+
+### Get Last Short URL
+
+```http
+GET /api/shorturl
+```
+
+Returns the most recently shortened URL.
+
+**Example Response:**
+
+```json
+{
+  "original_url": "https://www.example.com",
+  "short_url": 1
+}
+```
+
+### Redirect to Original URL
+
+```http
+GET /api/shorturl/{short_url}
+```
+
+Redirects to the original URL using the short URL code.
+
+**Path Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| short_url | integer | Yes | The short URL code |
+
+**Response:** `302 Redirect` to original URL
+
+## URL Validation
+
+The API validates URLs using the following criteria:
+- Must start with `http://` or `https://`
+- Must have a valid domain format
+
+## Interactive Documentation
+
+Visit `/api-docs` when the server is running to explore the API with Swagger UI.

@@ -1,0 +1,136 @@
+---
+title: 'Exercise Tracker API'
+description: 'API documentation for the Exercise Tracker microservice'
+openapi: 'GET /api/users'
+---
+
+# Exercise Tracker API
+
+A full-stack exercise tracking API built with Node.js, Express, and MongoDB.
+
+## Base URL
+
+```
+http://localhost:3000
+```
+
+## Endpoints
+
+### Create User
+
+```http
+POST /api/users
+```
+
+Creates a new user for exercise tracking.
+
+**Request Body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| username | string | Yes | Unique username |
+
+**Example Response:**
+
+```json
+{
+  "username": "johndoe",
+  "_id": "507f1f77bcf86cd799439011"
+}
+```
+
+### Get All Users
+
+```http
+GET /api/users
+```
+
+Retrieves a list of all registered users.
+
+**Example Response:**
+
+```json
+[
+  {
+    "username": "johndoe",
+    "_id": "507f1f77bcf86cd799439011"
+  }
+]
+```
+
+### Add Exercise
+
+```http
+POST /api/users/{_id}/exercises
+```
+
+Adds a new exercise to a user's log.
+
+**Path Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| _id | string | Yes | User ID |
+
+**Request Body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| description | string | Yes | Exercise description |
+| duration | integer | Yes | Duration in minutes |
+| date | string | No | Date (YYYY-MM-DD), defaults to today |
+
+**Example Response:**
+
+```json
+{
+  "username": "johndoe",
+  "description": "Running",
+  "duration": 30,
+  "date": "Mon Jan 01 2024",
+  "_id": "507f1f77bcf86cd799439011"
+}
+```
+
+### Get Exercise Log
+
+```http
+GET /api/users/{_id}/logs?[from][&to][&limit]
+```
+
+Retrieves a user's exercise log with optional filtering.
+
+**Path Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| _id | string | Yes | User ID |
+
+**Query Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| from | string | No | Start date (YYYY-MM-DD) |
+| to | string | No | End date (YYYY-MM-DD) |
+| limit | integer | No | Maximum number of results |
+
+**Example Response:**
+
+```json
+{
+  "username": "johndoe",
+  "count": 2,
+  "_id": "507f1f77bcf86cd799439011",
+  "log": [
+    {
+      "description": "Running",
+      "duration": 30,
+      "date": "Mon Jan 01 2024"
+    }
+  ]
+}
+```
+
+## Interactive Documentation
+
+Visit `/api-docs` when the server is running to explore the API with Swagger UI.

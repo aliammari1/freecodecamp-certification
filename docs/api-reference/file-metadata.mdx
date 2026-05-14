@@ -1,0 +1,71 @@
+---
+title: 'File Metadata API'
+description: 'API documentation for the File Metadata microservice'
+---
+
+# File Metadata API
+
+A microservice for uploading files and extracting metadata information.
+
+## Base URL
+
+```
+http://localhost:3000
+```
+
+## Endpoints
+
+### Upload File
+
+```http
+POST /api/fileanalyse
+```
+
+Uploads a file and returns its metadata.
+
+**Request Body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| upfile | file | Yes | File to upload |
+
+**Content-Type:** `multipart/form-data`
+
+**Example Response:**
+
+```json
+{
+  "name": "example.txt",
+  "type": "text/plain",
+  "size": 1024
+}
+```
+
+### Get Last Upload
+
+```http
+GET /api/fileanalyse
+```
+
+Returns metadata of the most recently uploaded file.
+
+**Example Response:**
+
+```json
+{
+  "name": "example.txt",
+  "type": "text/plain",
+  "size": 1024
+}
+```
+
+## Supported File Types
+
+The API accepts all file types and extracts:
+- **name**: Original filename
+- **type**: MIME type
+- **size**: File size in bytes
+
+## Interactive Documentation
+
+Visit `/api-docs` when the server is running to explore the API with Swagger UI.
