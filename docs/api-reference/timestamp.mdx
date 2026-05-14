@@ -1,0 +1,77 @@
+---
+title: 'Timestamp API'
+description: 'API documentation for the Timestamp microservice'
+---
+
+# Timestamp API
+
+A microservice for converting dates between Unix timestamps and UTC format.
+
+## Base URL
+
+```
+http://localhost:3000
+```
+
+## Endpoints
+
+### Convert Date
+
+```http
+GET /api/{date}
+```
+
+Converts a date string or Unix timestamp to both formats.
+
+**Path Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| date | string | Yes | Date string (YYYY-MM-DD) or Unix timestamp |
+
+**Example Request:**
+
+```bash
+GET /api/2024-01-01
+GET /api/1704067200000
+```
+
+**Example Response:**
+
+```json
+{
+  "unix": 1704067200000,
+  "utc": "Mon, 01 Jan 2024 00:00:00 GMT"
+}
+```
+
+### Current Time
+
+```http
+GET /api/
+```
+
+Returns the current date in both Unix and UTC formats.
+
+**Example Response:**
+
+```json
+{
+  "unix": 1704067200000,
+  "utc": "Mon, 01 Jan 2024 00:00:00 GMT"
+}
+```
+
+## Error Handling
+
+For invalid dates, the API returns:
+
+```json
+{
+  "error": "Invalid Date"
+}
+```
+
+## Interactive Documentation
+
+Visit `/api-docs` when the server is running to explore the API with Swagger UI.
