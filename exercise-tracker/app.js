@@ -3,9 +3,25 @@
 // (which use mongodb-memory-server).
 const express = require("express");
 const cors = require("cors");
+const helmet = require("helmet");
 const mongoose = require("mongoose");
+const { rateLimit } = require("express-rate-limit");
+const { pinoHttp } = require("pino-http");
+const { z } = require("zod");
 const { apiReference } = require("@scalar/express-api-reference");
 const { specs } = require("./swagger");
+
+const isTest = process.env.NODE_ENV === "test";
+
+// Request-body schemas — coerce form strings, reject empty/garbage input.
+const UserBody = z.object({
+  username: z.string().trim().min(1),
+});
+const ExerciseBody = z.object({
+  description: z.string().trim().min(1),
+  duration: z.coerce.number().int().positive(),
+  date: z.string().trim().optional(),
+});
 
 const LogSchema = new mongoose.Schema({
   username: String,
@@ -32,8 +48,24 @@ function formatDate(value) {
 function createApp() {
   const app = express();
 
+  // Security headers (CSP disabled — the Scalar playground loads inline assets).
+  app.use(helmet({ contentSecurityPolicy: false }));
   app.use(cors());
   app.use(express.urlencoded({ extended: false }));
+
+  // Structured request logging (silent under test to keep output clean).
+  app.use(pinoHttp({ enabled: !isTest }));
+
+  // Basic abuse protection; disabled while testing.
+  app.use(
+    rateLimit({
+      windowMs: 15 * 60 * 1000,
+      limit: 1000,
+      standardHeaders: "draft-7",
+      legacyHeaders: false,
+      skip: () => isTest,
+    }),
+  );
 
   app.get("/api-docs.json", (_req, res) => res.json(specs));
   app.use(
@@ -78,8 +110,12 @@ function createApp() {
    */
   app.post("/api/users", async (req, res, next) => {
     try {
+      const parsed = UserBody.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: "username is required" });
+      }
       const log = await Log.create({
-        username: req.body.username,
+        username: parsed.data.username,
         count: 0,
         log: [],
       });
@@ -154,21 +190,28 @@ function createApp() {
    */
   app.post("/api/users/:_id/exercises", async (req, res, next) => {
     try {
+      const parsed = ExerciseBody.safeParse(req.body);
+      if (!parsed.success) {
+        return res
+          .status(400)
+          .json({ error: "description and duration are required" });
+      }
+
       const user = await Log.findById(req.params._id);
       if (!user) return res.status(404).json({ error: "User not found" });
 
-      const date = req.body.date
-        ? formatDate(req.body.date)
+      const { description, duration } = parsed.data;
+      const date = parsed.data.date
+        ? formatDate(parsed.data.date)
         : new Date().toDateString();
-      const duration = Number.parseInt(req.body.duration, 10);
 
-      user.log.push({ description: req.body.description, duration, date });
+      user.log.push({ description, duration, date });
       user.count = (user.count || 0) + 1;
       await user.save();
 
       res.json({
         username: user.username,
-        description: req.body.description,
+        description,
         duration,
         date,
         _id: user._id,

@@ -1,9 +1,14 @@
 // app.js — builds the Express app (no listen). Imported by index.js and tests.
 const express = require("express");
 const cors = require("cors");
+const helmet = require("helmet");
 const multer = require("multer");
+const { rateLimit } = require("express-rate-limit");
+const { pinoHttp } = require("pino-http");
 const { apiReference } = require("@scalar/express-api-reference");
 const { specs } = require("./swagger");
+
+const isTest = process.env.NODE_ENV === "test";
 
 function createApp() {
   const app = express();
@@ -18,7 +23,23 @@ function createApp() {
 
   let lastFile = {};
 
+  // Security headers (CSP disabled — the Scalar playground loads inline assets).
+  app.use(helmet({ contentSecurityPolicy: false }));
   app.use(cors());
+
+  // Structured request logging (silent under test to keep output clean).
+  app.use(pinoHttp({ enabled: !isTest }));
+
+  // Basic abuse protection; disabled while testing.
+  app.use(
+    rateLimit({
+      windowMs: 15 * 60 * 1000,
+      limit: 1000,
+      standardHeaders: "draft-7",
+      legacyHeaders: false,
+      skip: () => isTest,
+    }),
+  );
 
   app.get("/api-docs.json", (_req, res) => res.json(specs));
   app.use(

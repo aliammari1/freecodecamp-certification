@@ -1,13 +1,25 @@
 // app.js — builds the Express app (no listen). Imported by index.js and tests.
 const express = require("express");
 const cors = require("cors");
+const helmet = require("helmet");
+const { rateLimit } = require("express-rate-limit");
+const { pinoHttp } = require("pino-http");
+const { z } = require("zod");
 const { apiReference } = require("@scalar/express-api-reference");
 const { specs } = require("./swagger");
+
+const isTest = process.env.NODE_ENV === "test";
 
 // Only http/https URLs are accepted. This prevents the redirect endpoint from
 // being abused for open-redirect to javascript:/data:/file: schemes.
 const URL_REGEX =
   /^(https?):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-.,@?^=%&:/~+#]*[\w\-@?^=%&/~+#])?$/;
+
+// Zod validation for the shorten request body. Mirrors URL_REGEX so the
+// redirect path can never be fed a non-http(s) scheme.
+const ShortenBody = z.object({
+  url: z.string().regex(URL_REGEX),
+});
 
 function createApp() {
   const app = express();
@@ -15,8 +27,24 @@ function createApp() {
   const store = { original_url: "", short_url: 1 };
   let hasUrl = false;
 
+  // Security headers (CSP disabled — the Scalar playground loads inline assets).
+  app.use(helmet({ contentSecurityPolicy: false }));
   app.use(cors());
   app.use(express.urlencoded({ extended: false }));
+
+  // Structured request logging (silent under test to keep output clean).
+  app.use(pinoHttp({ enabled: !isTest }));
+
+  // Basic abuse protection; disabled while testing.
+  app.use(
+    rateLimit({
+      windowMs: 15 * 60 * 1000,
+      limit: 1000,
+      standardHeaders: "draft-7",
+      legacyHeaders: false,
+      skip: () => isTest,
+    }),
+  );
 
   app.get("/api-docs.json", (_req, res) => res.json(specs));
   app.use(
@@ -91,9 +119,10 @@ function createApp() {
    *                   type: string
    */
   app.post("/api/shorturl", (req, res) => {
-    if (URL_REGEX.test(req.body.url)) {
+    const parsed = ShortenBody.safeParse(req.body);
+    if (parsed.success) {
       hasUrl = true;
-      store.original_url = req.body.url;
+      store.original_url = parsed.data.url;
       return res.json({
         original_url: store.original_url,
         short_url: store.short_url,

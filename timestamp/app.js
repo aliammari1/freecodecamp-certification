@@ -1,14 +1,35 @@
 // app.js — builds the Express app (no listen). Imported by index.js and tests.
 const express = require("express");
 const cors = require("cors");
+const helmet = require("helmet");
+const { rateLimit } = require("express-rate-limit");
+const { pinoHttp } = require("pino-http");
 const { apiReference } = require("@scalar/express-api-reference");
 const { specs } = require("./swagger");
+
+const isTest = process.env.NODE_ENV === "test";
 
 function createApp() {
   const app = express();
 
+  // Security headers (CSP disabled — the Scalar playground loads inline assets).
+  app.use(helmet({ contentSecurityPolicy: false }));
   // enable CORS so the API is remotely testable by freeCodeCamp
   app.use(cors({ optionsSuccessStatus: 200 }));
+
+  // Structured request logging (silent under test to keep output clean).
+  app.use(pinoHttp({ enabled: !isTest }));
+
+  // Basic abuse protection; disabled while testing.
+  app.use(
+    rateLimit({
+      windowMs: 15 * 60 * 1000,
+      limit: 1000,
+      standardHeaders: "draft-7",
+      legacyHeaders: false,
+      skip: () => isTest,
+    }),
+  );
 
   // OpenAPI spec + Scalar interactive playground
   app.get("/api-docs.json", (_req, res) => res.json(specs));
