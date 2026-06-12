@@ -1,0 +1,30 @@
+{
+  "name": "freecodecamp-portfolio",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Monorepo of five freeCodeCamp Backend & APIs certification microservices (Bun + Express 5)",
+  "author": "Ali Ammari <ammari.ali.0001@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/aliammari1/freecodecamp-portfolio",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aliammari1/freecodecamp-portfolio.git"
+  },
+  "workspaces": [
+    "exercise-tracker",
+    "file-metadata",
+    "header-parser",
+    "timestamp",
+    "url-shortener"
+  ],
+  "scripts": {
+    "test": "bun test",
+    "openapi": "bun run --filter '*' openapi",
+    "lint": "bunx @biomejs/biome check .",
+    "format": "bunx @biomejs/biome format --write .",
+    "ci": "bunx @biomejs/biome ci ."
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.0"
+  }
+}

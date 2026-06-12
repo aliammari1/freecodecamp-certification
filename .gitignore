@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+*.local
+
+# Uploads (file-metadata runtime)
+**/uploads/
+
+# Generated OpenAPI specs (regenerated via `bun run openapi`)
+**/openapi.json
+docs/specs/
+
+# Build / coverage
+coverage/
+*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Cloudflare
+.wrangler/
+.dev.vars
