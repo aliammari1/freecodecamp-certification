@@ -29,3 +29,11 @@ Thumbs.db
 # Cloudflare
 .wrangler/
 .dev.vars
+
+# Internal growth/marketing notes (not for public)
+GROWTH.md
+BANNER.md
+SUBMITTING_TO_AWESOME.md
+launch-kit.md
+star-strategy.md
+modernization-backlog.md
