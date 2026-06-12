@@ -1,0 +1,31 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":semanticCommits",
+    ":dependencyDashboard",
+    "group:monorepos"
+  ],
+  "timezone": "Africa/Tunis",
+  "schedule": ["before 6am on monday"],
+  "labels": ["dependencies"],
+  "lockFileMaintenance": { "enabled": true },
+  "packageRules": [
+    {
+      "description": "Auto-merge non-major dev dependencies",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    },
+    {
+      "description": "Group Scalar packages",
+      "matchPackageNames": ["/^@scalar//"],
+      "groupName": "scalar"
+    },
+    {
+      "description": "Pin GitHub Action digests",
+      "matchManagers": ["github-actions"],
+      "pinDigests": true
+    }
+  ]
+}

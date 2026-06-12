@@ -1,0 +1,13 @@
+# lefthook — local git hooks mirroring CI.
+# Install once with: bunx lefthook install
+pre-commit:
+  parallel: true
+  commands:
+    biome:
+      glob: "*.{js,ts,json,jsonc}"
+      run: bunx @biomejs/biome check --no-errors-on-unmatched --files-ignore-unknown=true {staged_files}
+
+pre-push:
+  commands:
+    test:
+      run: bun test
