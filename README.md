@@ -1,10 +1,12 @@
 <!-- SPDX-License-Identifier: MIT -->
 
-# freeCodeCamp Backend API Portfolio
+# Production-ready Express 5 + Bun API starter
 
-> Five freeCodeCamp **Back End Development and APIs** certification microservices,
-> rebuilt as one **Bun workspace** monorepo on **Express 5** — with real tests,
-> a single OpenAPI generator, a Scalar playground per service, and Mintlify docs.
+> The **5 official freeCodeCamp Back End Development & APIs cert projects**, built
+> as one **Bun-workspaces** monorepo on **Express 5** — with **OpenAPI docs,
+> `bun:test` tests, Docker, and per-service security hardening** (helmet,
+> rate-limiting, Zod validation, structured logging). Clone it, learn the
+> patterns, or **use it as a template** for your own small Express APIs.
 
 ![freecodecamp-portfolio](assets/banner.svg)
 
@@ -15,6 +17,20 @@
 [![Bun](https://img.shields.io/badge/Bun-1.3-f9f1e1?style=flat-square&logo=bun)](https://bun.sh)
 [![Express](https://img.shields.io/badge/Express-5-404040?style=flat-square&logo=express)](https://expressjs.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
+
+### ▶ Try the API
+
+[**▶ Live timestamp API (Cloudflare Workers)**](https://fcc-timestamp.workers.dev/api/2020-01-01)
+&nbsp;·&nbsp;
+[**▶ Interactive API playground (Scalar / Mintlify)**](#api-documentation)
+&nbsp;·&nbsp;
+[**⭐ Star this repo**](https://github.com/aliammari1/freecodecamp-portfolio) if it
+helps you ship.
+
+> **Use this as a template.** Click **"Use this template"** on GitHub (or
+> `git clone`) to get a working Express 5 + Bun API with docs, tests, Docker,
+> and security middleware already wired — then delete the services you don't
+> need. See [Quick start](#quick-start) and the per-service `sample.env` files.
 
 ---
 
@@ -102,6 +118,13 @@ cd file-metadata && bun test      # one service
 
 ## Tooling
 
+- **Per-service hardening (in every `createApp()`):**
+  [helmet](https://helmetjs.github.io) security headers,
+  [express-rate-limit](https://express-rate-limit.mintlify.app),
+  [pino-http](https://getpino.io) structured request logging, and
+  [Zod](https://zod.dev) request-body validation. `exercise-tracker` also
+  validates `MONGO_URI`/`PORT` at boot with [znv](https://github.com/lostfictions/znv)
+  (fail-fast). Logging and rate-limiting are auto-disabled under `NODE_ENV=test`.
 - **Lint/format:** [Biome](https://biomejs.dev) — `bun run ci`.
 - **CI:** matrix over the 5 services on `oven-sh/setup-bun` →
   `bun install --frozen-lockfile` → Biome → `bun test --coverage` (Codecov
@@ -149,6 +172,20 @@ open-source PR. Questions about the underlying curriculum belong on the
 **Ali Ammari** — [@aliammari1](https://github.com/aliammari1) ·
 ammari.ali.0001@gmail.com
 
+## Related projects
+
+Other open-source projects by the same author:
+
+- [**github-traffic-analytics**](https://github.com/aliammari1/github-traffic-analytics)
+  — self-hosted GitHub repo analytics (keep traffic/clones past 14 days).
+- [**JobPrep**](https://github.com/aliammari1/JobPrep) — open-source, BYOK,
+  self-hostable AI interview-prep platform.
+- [**readrealm**](https://github.com/aliammari1/readrealm) — AI book-chat: one
+  backend → Android / iOS / Flutter.
+
+If this starter saved you time, a ⭐ helps others find it.
+
 ---
 
-*Built for the freeCodeCamp Back End Development and APIs certification.*
+*Built for the freeCodeCamp Back End Development and APIs certification — now a
+reusable Express 5 + Bun API starter.*
