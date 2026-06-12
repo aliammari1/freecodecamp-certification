@@ -1,185 +1,41 @@
-# FreeCodeCamp File Metadata Microservice
+<!-- SPDX-License-Identifier: MIT -->
 
-A file metadata microservice built as part of the FreeCodeCamp Back End Development and APIs certification. This API allows users to upload files and retrieve metadata information including file name, type, and size.
+# File Metadata Microservice
 
-![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
-![Express](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+Part of the [freeCodeCamp Backend API Portfolio](../README.md). An Express 5
+service that accepts a file upload and returns its name, MIME type, and size.
 
-## 🚀 Features
+## Endpoints
 
-- **File Upload**: Upload files using multipart form data
-- **Metadata Extraction**: Extract file name, MIME type, and size
-- **RESTful API**: Simple and clean API endpoints
-- **File Type Support**: Supports various file types and formats
-- **Real-time Processing**: Instant file analysis upon upload
-
-## 🛠️ Technologies Used
-
-- **Node.js**: Runtime environment
-- **Express.js**: Web framework
-- **Multer**: Middleware for handling multipart/form-data
-- **CORS**: Cross-origin resource sharing
-- **dotenv**: Environment variable management
-
-## 📦 Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/aliammari1/freecodecamp-filemetadata-project.git
-   cd freecodecamp-filemetadata-project
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment variables**
-   ```bash
-   cp sample.env .env
-   # Edit .env with your configuration
-   ```
-
-4. **Start the server**
-   ```bash
-   npm start
-   ```
-
-5. **Open your browser**
-   ```
-   Navigate to http://localhost:3000
-   ```
-
-## 🎯 Usage
-
-### API Endpoints
-
-#### Upload File
-- **POST** `/api/fileanalyse`
-- **Content-Type**: `multipart/form-data`
-- **Form field**: `upfile`
-
-**Example Response:**
-```json
-{
-  "name": "example.txt",
-  "type": "text/plain",
-  "size": 1024
-}
-```
-
-#### Get Last Uploaded File Info
-- **GET** `/api/fileanalyse`
-
-**Example Response:**
-```json
-{
-  "name": "example.txt",
-  "type": "text/plain",
-  "size": 1024
-}
-```
-
-### Using the Web Interface
-
-1. Navigate to the main page
-2. Select a file using the file input
-3. Click "Upload" to analyze the file
-4. View the metadata response
-
-### Using cURL
+| Method | Path | Description |
+|---|---|---|
+| `POST` | `/api/fileanalyse` | Upload a file in the `upfile` field (multipart) |
+| `GET` | `/api/fileanalyse` | Metadata of the last uploaded file |
+| `GET` | `/api-docs` | Scalar interactive reference |
+| `GET` | `/api-docs.json` | Raw OpenAPI 3.0 spec |
 
 ```bash
-# Upload a file
-curl -X POST -F "upfile=@/path/to/your/file.txt" http://localhost:3000/api/fileanalyse
-
-# Get last uploaded file info
-curl http://localhost:3000/api/fileanalyse
+curl -F "upfile=@notes.txt" localhost:3000/api/fileanalyse
+# {"name":"notes.txt","type":"text/plain","size":18}
 ```
 
-## 📁 Project Structure
-
-```
-freecodecamp-filemetadata-project/
-├── public/             # Static files (CSS, client-side JS)
-├── views/              # HTML templates
-├── uploads/            # Temporary file storage
-├── index.js            # Main server file
-├── package.json        # Dependencies and scripts
-├── sample.env          # Environment variables template
-└── README.md           # Project documentation
-```
-
-## 🔧 Configuration
-
-The application uses the following environment variables:
-
-- `PORT`: Server port (default: 3000)
-
-## 🧪 Testing
-
-Test the API using various file types:
+## Run & test
 
 ```bash
-# Test with different file types
-curl -X POST -F "upfile=@test.pdf" http://localhost:3000/api/fileanalyse
-curl -X POST -F "upfile=@image.jpg" http://localhost:3000/api/fileanalyse
-curl -X POST -F "upfile=@document.docx" http://localhost:3000/api/fileanalyse
+bun run dev
+bun test
 ```
 
-## 🔍 API Response Format
+## Security note
 
-The API returns file metadata in the following format:
+`multer` stores uploads under a **random generated filename** in `uploads/`;
+the on-disk path is never derived from the untrusted `originalname`, so a crafted
+filename (e.g. `../../etc/passwd`) cannot escape the upload directory. Uploads are
+capped at 10 MB. A regression test pins this behaviour.
 
-```typescript
-interface FileMetadata {
-  name: string;    // Original filename
-  type: string;    // MIME type
-  size: number;    // File size in bytes
-}
-```
+## What you'll learn
 
-## 🚀 Deployment
-
-### Local Development
-```bash
-npm start
-```
-
-### Production Deployment
-1. Set environment variables
-2. Install production dependencies: `npm ci --only=production`
-3. Start the application: `npm start`
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Commit your changes: `git commit -am 'Add feature'`
-4. Push to the branch: `git push origin feature-name`
-5. Submit a pull request
-
-## 📚 Learning Resources
-
-This project is part of the FreeCodeCamp curriculum:
-- [Back End Development and APIs](https://www.freecodecamp.org/learn/back-end-development-and-apis/)
-- [File Metadata Microservice](https://www.freecodecamp.org/learn/back-end-development-and-apis/back-end-development-and-apis-projects/file-metadata-microservice)
-
-## 🏷️ Tags
-
-`nodejs` `express` `multer` `file-upload` `microservice` `freecodecamp` `backend` `api` `javascript`
-
-## 👨‍💻 Author
-
-**Ali Ammari**
-- GitHub: [@aliammari1](https://github.com/aliammari1)
-- Portfolio: [aliammari.netlify.app](https://aliammari.netlify.app)
-
----
-
-⭐ Star this repository if you found it helpful!
+- Handling `multipart/form-data` with `multer` and `upload.single()`.
+- A real-world **path-traversal** defence (don't trust `originalname` for the
+  storage path) and how to size-limit uploads.
+- Documenting a file-upload endpoint in OpenAPI (`format: binary`).

@@ -19,10 +19,9 @@ git clone https://github.com/aliammari1/freecodecamp-portfolio.git
 cd freecodecamp-portfolio
 ```
 
-2. **Install dependencies for a specific API**
+2. **Install dependencies (one Bun workspace, one lockfile)**
 
 ```bash
-cd exercise-tracker
 bun install
 ```
 
@@ -41,7 +40,8 @@ bun run dev
 
 ## API Documentation
 
-Each API includes interactive Swagger documentation. Once running, visit:
+Each API serves an interactive Scalar reference at `/api-docs` and the raw
+OpenAPI spec at `/api-docs.json`. Once running, visit:
 
 ```
 http://localhost:3000/api-docs
@@ -87,15 +87,18 @@ curl -X POST http://localhost:3000/api/shorturl \
 Each API follows the same structure:
 
 ```
-project-name/
-├── index.js          # Main Express application
-├── swagger.js        # Swagger documentation config
-├── package.json      # Dependencies and scripts
-├── bun.lock          # Bun lockfile
-├── public/           # Static assets
-├── views/            # HTML templates
-└── .env              # Environment variables
+service-name/
+├── app.js            # createApp() factory (testable, Worker-reusable)
+├── index.js          # listen-only entrypoint
+├── swagger.js        # swagger-jsdoc OpenAPI config
+├── gen-openapi.js    # writes openapi.json
+├── test/             # bun:test + supertest
+├── package.json      # dependencies and scripts
+├── public/           # static assets
+└── views/            # HTML templates
 ```
+
+> The lockfile lives at the repo root (`bun.lock`) for the whole workspace.
 
 ## Next Steps
 

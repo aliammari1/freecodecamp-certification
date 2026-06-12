@@ -1,178 +1,120 @@
-# FreeCodeCamp Backend API Portfolio
+<!-- SPDX-License-Identifier: MIT -->
 
-> A curated collection of **5 microservice APIs** built for the freeCodeCamp Backend Development and APIs certification, now unified in a single monorepo with comprehensive documentation, interactive API playground, and modern tooling.
+# freeCodeCamp Backend API Portfolio
 
-[![Bun](https://img.shields.io/badge/Bun-1.0+-f9f1e1?style=flat-square&logo=bun)](https://bun.sh)
-[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=flat-square&logo=node.js)](https://nodejs.org)
-[![Express](https://img.shields.io/badge/Express-5.0-404040?style=flat-square)](https://expressjs.com)
-[![MongoDB](https://img.shields.io/badge/MongoDB-7.0-47A248?style=flat-square&logo=mongodb)](https://mongodb.com)
-[![License](https://img.shields.io/badge/License-Source--Available-orange?style=flat-square)](LICENSE.md)
+> Five freeCodeCamp **Back End Development and APIs** certification microservices,
+> rebuilt as one **Bun workspace** monorepo on **Express 5** — with real tests,
+> a single OpenAPI generator, a Scalar playground per service, and Mintlify docs.
 
-## 📁 Monorepo Structure
+![freecodecamp-portfolio](assets/banner.svg)
 
-```
-freecodecamp-portfolio/
-├── exercise-tracker/          # Exercise logging API with MongoDB
-├── file-metadata/             # File upload & metadata extraction API
-├── header-parser/             # HTTP request header parser API
-├── timestamp/                 # Date/timestamp conversion API
-├── url-shortener/             # URL shortening & redirect API
-├── docs/                      # Mintlify documentation
-├── swagger/                   # OpenAPI specifications
-└── README.md                  # This file
-```
+<!-- TODO: replace the placeholder banner.svg with a generated raster hero +
+     1280×640 social preview (brandkit / imagegen). Art direction in BANNER.md. -->
 
-## 🚀 Quick Start
+[![CI](https://github.com/aliammari1/freecodecamp-portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/aliammari1/freecodecamp-portfolio/actions/workflows/ci.yml)
+[![Bun](https://img.shields.io/badge/Bun-1.3-f9f1e1?style=flat-square&logo=bun)](https://bun.sh)
+[![Express](https://img.shields.io/badge/Express-5-404040?style=flat-square&logo=express)](https://expressjs.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 
-### Prerequisites
+---
 
-- [Bun](https://bun.sh) >= 1.0.0 (or Node.js >= 18)
-- MongoDB (for Exercise Tracker and URL Shortener)
+## What's inside
 
-### Install Dependencies
+| Service | What it does | Stateful? | What you'll learn |
+|---|---|---|---|
+| [`exercise-tracker`](exercise-tracker/) | Users + exercise logs with date/limit filters | **MongoDB** | Mongoose modelling, async route handlers, query filtering |
+| [`file-metadata`](file-metadata/) | Upload a file, get name/type/size back | no | `multer` uploads done safely (no path traversal) |
+| [`header-parser`](header-parser/) | Echo the caller's IP / language / user-agent | no | Reading request headers, proxy `X-Forwarded-For` |
+| [`timestamp`](timestamp/) | Convert dates ⇄ Unix timestamps | no | Date parsing/formatting, route ordering |
+| [`url-shortener`](url-shortener/) | Validate a URL and 302-redirect to it | no | URL validation, open-redirect defence |
+
+This really is a **monorepo**: a root `package.json` declares Bun
+[workspaces](https://bun.sh/docs/install/workspaces) over the five services with a
+single root `bun.lock`. Each service splits into `app.js` (an exported
+`createApp()` factory — testable + Worker-reusable) and `index.js` (the
+listen-only entrypoint).
+
+## Quick start
 
 ```bash
-# Install all dependencies across all projects
+# install everything (one lockfile, all services)
 bun install
+
+# run a service (each defaults to PORT 3000)
+cd timestamp && bun run dev      # or: bun run start
+
+# exercise-tracker needs a Mongo connection string
+cd exercise-tracker && MONGO_URI=mongodb://localhost:27017/exercises bun run start
 ```
 
-### Run Individual APIs
+## API documentation
+
+- **Interactive playground** — every service serves a
+  [Scalar](https://scalar.com) API reference at **`/api-docs`** and the raw
+  OpenAPI 3.0 spec at **`/api-docs.json`**.
+- **Hosted docs** — [Mintlify](https://mintlify.com) site under [`docs/`](docs/)
+  (`docs/docs.json`), with each service's API reference backed by its committed
+  OpenAPI spec (`docs/specs/*.json`). Preview locally with
+  `bunx mint dev` inside `docs/`.
+
+OpenAPI is generated from **one** source — `swagger-jsdoc` annotations on the
+routes (the old `swagger-autogen` second generator and the hand-rolled
+`docs/index.html` were removed). Regenerate + sync the docs specs with:
 
 ```bash
-# Exercise Tracker
-cd exercise-tracker && bun run dev
-
-# File Metadata
-cd file-metadata && bun run dev
-
-# Header Parser
-cd header-parser && bun run dev
-
-# Timestamp
-cd timestamp && bun run dev
-
-# URL Shortener
-cd url-shortener && bun run dev
+bun run sync-docs    # runs `bun run openapi` then copies specs into docs/specs/
+bun run spectral     # lint the generated specs
 ```
 
-## 📚 API Documentation
-
-### Swagger/OpenAPI Playground
-
-Each API includes interactive Swagger documentation. Visit `/api-docs` on any running API server:
-
-- **Exercise Tracker**: `http://localhost:3000/api-docs`
-- **File Metadata**: `http://localhost:3000/api-docs`
-- **Header Parser**: `http://localhost:3000/api-docs`
-- **Timestamp**: `http://localhost:3000/api-docs`
-- **URL Shortener**: `http://localhost:3000/api-docs`
-
-### 📖 Full Documentation
-
-Comprehensive documentation is available via **Mintlify**:
-
-👉 **[View Documentation](https://aliammari1.github.io/freecodecamp-portfolio)**
-
-## 🛠️ Projects Overview
-
-### 1. 🏃 Exercise Tracker API
-
-Log exercises with descriptions, durations, and dates. Supports filtering by date range.
-
-**Endpoints:**
-- `POST /api/users` - Create a new user
-- `GET /api/users` - List all users
-- `POST /api/users/:_id/exercises` - Add exercise log
-- `GET /api/users/:_id/logs` - Get exercise logs (with from/to/limit filters)
-
-**Tech Stack:** Node.js, Express, MongoDB, Mongoose
-
----
-
-### 2. 📄 File Metadata API
-
-Upload files and retrieve metadata including filename, MIME type, and size.
-
-**Endpoints:**
-- `POST /api/fileanalyse` - Upload a file
-- `GET /api/fileanalyse` - Get last uploaded file info
-
-**Tech Stack:** Node.js, Express, Multer
-
----
-
-### 3. 🔍 Header Parser API
-
-Parse HTTP request headers and return client information including IP, language, and software.
-
-**Endpoints:**
-- `GET /api/whoami` - Get parsed header information
-
-**Tech Stack:** Node.js, Express
-
----
-
-### 4. ⏰ Timestamp API
-
-Convert between date strings and Unix timestamps.
-
-**Endpoints:**
-- `GET /api/:date` - Convert a date string or Unix timestamp
-- `GET /api` - Get current timestamp
-
-**Tech Stack:** Node.js, Express
-
----
-
-### 5. 🔗 URL Shortener API
-
-Shorten long URLs and redirect using short IDs.
-
-**Endpoints:**
-- `POST /api/shorturl` - Create a short URL
-- `GET /api/shorturl/:id` - Redirect to original URL
-
-**Tech Stack:** Node.js, Express, MongoDB
-
-## 🧪 Testing
+## Testing
 
 ```bash
-# Run tests for all projects
-bun test
-
-# Run tests for a specific project
-cd exercise-tracker && bun test
+bun test                          # everything
+cd file-metadata && bun test      # one service
 ```
 
-## 🎓 What I Learned
+- HTTP tests use **`bun:test` + `supertest`** against `createApp()`.
+- `exercise-tracker` runs against **`mongodb-memory-server`** (the first run
+  downloads a MongoDB binary).
+- CI also runs **Schemathesis** contract fuzzing against each `/api-docs.json`.
 
-Through building these microservices, I gained hands-on experience with:
+## Tooling
 
-- **RESTful API design** with Express.js
-- **MongoDB schema modeling** with Mongoose
-- **File upload handling** with Multer
-- **HTTP header parsing** and client detection
-- **Date parsing and formatting** with JavaScript
-- **URL validation** with DNS lookup
-- **API documentation** with Swagger/OpenAPI
-- **Monorepo management** with Git subtrees
+- **Lint/format:** [Biome](https://biomejs.dev) — `bun run ci`.
+- **CI:** matrix over the 5 services on `oven-sh/setup-bun` →
+  `bun install --frozen-lockfile` → Biome → `bun test --coverage` (Codecov
+  per-service flags). A `mongo:7` service container is attached **only** to the
+  exercise-tracker leg; the other four are stateless.
+- **Security/supply-chain:** CodeQL, Trivy (the five Bun images), Renovate,
+  release-please (manifest mode), `lefthook` git hooks. Actions are SHA-pinned.
+- **AI:** `claude-code-action` PR review tuned to the file-metadata path-traversal
+  and url-shortener open-redirect surfaces (gated on `ANTHROPIC_API_KEY`).
 
-> **Why this matters for FAANG interviews:** Understanding microservices architecture, API design, and data persistence are core skills tested in backend engineering interviews at top tech companies.
+## Engineering decisions
 
-## 🤝 Contributing
+- **MIT.** These are learning APIs meant to be read and forked, so the previous
+  per-service "Commercial Use License" was replaced with a single MIT license
+  (SPDX headers throughout).
+- **One OpenAPI generator.** `swagger-jsdoc` keeps the spec next to the routes;
+  shipping a second generator (`swagger-autogen`) just produced drift.
+- **Scalar over swagger-ui-express** for a lighter, modern local playground.
+- **Cloudflare (proof, not full migration).** The stateless `timestamp` service
+  ships a working **Hono Worker** (`timestamp/worker.js` + `wrangler.toml`,
+  validated with `wrangler deploy --dry-run`). D1 (edge SQLite) migrations are
+  scaffolded for the `exercise-tracker`/`url-shortener` demo paths, but **MongoDB
+  remains the primary runtime** — the full Express→Workers port for the stateful
+  services is intentionally deferred. The deploy workflow is gated on
+  `ENABLE_CF_DEPLOY` + `CLOUDFLARE_API_TOKEN`, so it never runs without an account.
 
-Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for setup instructions, coding standards, and the pull request process.
+## License
 
-## 📄 License
+[MIT](LICENSE) © Ali Ammari
 
-This project is licensed under a [Source-Available License](LICENSE.md).
+## Author
 
-## 👤 Author
-
-**Ali Ammari**
-- GitHub: [@aliammari1](https://github.com/aliammari1)
-- Email: ammari.ali.0001@gmail.com
+**Ali Ammari** — [@aliammari1](https://github.com/aliammari1) ·
+ammari.ali.0001@gmail.com
 
 ---
 
-*Built with ❤️ for the freeCodeCamp Backend Development and APIs certification.*
+*Built for the freeCodeCamp Back End Development and APIs certification.*
