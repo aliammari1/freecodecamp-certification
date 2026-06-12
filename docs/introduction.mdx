@@ -36,6 +36,14 @@ This portfolio demonstrates fundamental backend development concepts through pra
 - **Cross-Origin Support** - CORS enabled for client-side testing
 - **Modern Tooling** - Bun workspaces for fast installs, Biome for linting, bun:test for tests
 
+## Live demo
+
+The stateless **Timestamp** service runs on the **Cloudflare Workers** free tier
+(Hono on `workerd`) for an always-on, zero-cost endpoint. Deploy it with
+`cd timestamp && bunx wrangler deploy` (free Cloudflare account required). The two
+stateful services ship **Cloudflare D1** migrations for an edge demo path, while
+MongoDB / in-memory remain their primary runtimes.
+
 ## Quick Start
 
 Each API is self-contained and can be run independently. Check out the [Quickstart](/quickstart) guide to get up and running in minutes.

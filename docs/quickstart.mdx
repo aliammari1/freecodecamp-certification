@@ -25,17 +25,18 @@ cd freecodecamp-portfolio
 bun install
 ```
 
-3. **Set up environment variables**
+3. **Set up environment variables (per service that needs them)**
 
 ```bash
-cp sample.env .env
-# Edit .env with your configuration
+# only exercise-tracker / url-shortener ship a sample.env
+cd exercise-tracker && cp sample.env .env
+# Edit .env (e.g. MONGO_URI) as needed
 ```
 
-4. **Start the development server**
+4. **Start a service in watch mode**
 
 ```bash
-bun run dev
+cd timestamp && bun run dev   # each service runs independently on PORT 3000
 ```
 
 ## API Documentation

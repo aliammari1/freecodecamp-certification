@@ -1,30 +1,35 @@
 <!-- SPDX-License-Identifier: MIT -->
 
-# Banner & Social Preview — Art Direction
+# Banner & Social Preview
 
-**Status:** placeholder SVG committed in [`assets/`](assets/); final raster
-hero + 1280×640 GitHub social preview to be generated with the `brandkit` /
-`imagegen-frontend-web` skills (needs an image-gen run — see TODO in the README).
+**Status:** placeholder SVG committed at [`assets/banner.svg`](assets/banner.svg)
+(referenced by the README). Generate the final raster hero + 1280×640 GitHub
+social preview from the single prompt below, then commit them locally as
+`assets/banner.png` (hero) and `assets/social-preview.png` so they never
+rate-limit or 404.
 
-## Direction: "microservice mesh" (freeCodeCamp navy)
+## The prompt (use verbatim with `brandkit` / `imagegen-frontend-web`)
 
-- **Palette:** freeCodeCamp navy `#0A0A23` background, off-white `#D0D0D5`
-  text/lines, with five accent dots — one per service — in a restrained
-  cool-to-warm sweep.
-- **Concept:** five nodes (the services) connected by thin routing lines into a
-  small "mesh", evoking a service map. Each node labelled with its glyph:
-  exercise-tracker (running figure), file-metadata (file), header-parser (globe),
-  timestamp (clock), url-shortener (link).
-- **Type:** monospace wordmark `freecodecamp-portfolio`, lowercase, generous
-  letter-spacing; subtitle "5 Express microservices · one Bun workspace".
-- **Mood:** clean, technical, editorial — not gradient-heavy AI-slop.
+> A clean, technical, editorial GitHub banner on a solid freeCodeCamp-navy
+> background `#0A0A23` (no gradients, no AI-slop glow). Center concept: a small
+> **microservice mesh** — five circular API nodes connected by thin off-white
+> `#D0D0D5` routing lines into a tidy service map. The two left nodes converge on
+> a labelled **"Bun + Express" core** badge in the middle; from the
+> **exercise-tracker** node a single line branches to a small **MongoDB** leaf
+> icon (it is the only stateful service). Each node carries a minimal monoline
+> glyph and tiny lowercase label: a running figure ("exercise-tracker"), a file
+> ("file-metadata"), a globe ("header-parser"), a clock ("timestamp"), a link
+> ("url-shortener"). Five accent dots, one per node, in a restrained cool→warm
+> sweep. Lowercase monospace wordmark **`freecodecamp-portfolio`** with generous
+> letter-spacing, and the subtitle **"5 Express microservices · one Bun
+> workspace"**. Flat, crisp, lots of negative space, dark-tech developer-tool
+> aesthetic. Render two crops: a wide README hero (1280×320) and a centered
+> 1280×640 GitHub social-preview card.
 
 ## Deliverables
 
 | Asset | Size | Use |
 |---|---|---|
-| `assets/banner.svg` | scalable | README hero (committed placeholder) |
-| `assets/banner.png` | 1280×320 | README hero (TODO: raster export) |
-| `assets/social-preview.png` | 1280×640 | GitHub Settings → Social preview (TODO) |
-
-Commit all final assets locally (SVG/PNG) so they never rate-limit or 404.
+| `assets/banner.svg` | scalable | README hero (committed placeholder, in use) |
+| `assets/banner.png` | 1280×320 | README hero raster export |
+| `assets/social-preview.png` | 1280×640 | GitHub → Settings → Social preview |
