@@ -1,0 +1,105 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "File Metadata API",
+    "version": "2.0.0",
+    "description": "A file metadata microservice API built with Express",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    },
+    "contact": {
+      "name": "Ali Ammari",
+      "email": "ammari.ali.0001@gmail.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/api/fileanalyse": {
+      "post": {
+        "summary": "Upload and analyze file",
+        "description": "Upload a file and retrieve its metadata (name, type, size)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "upfile": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The file to upload"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "File metadata retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Original file name"
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "MIME type"
+                    },
+                    "size": {
+                      "type": "integer",
+                      "description": "File size in bytes"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No file uploaded"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get last uploaded file info",
+        "description": "Returns metadata of the most recently uploaded file",
+        "responses": {
+          "200": {
+            "description": "File metadata retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {},
+  "tags": []
+}

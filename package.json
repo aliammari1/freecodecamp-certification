@@ -20,11 +20,13 @@
   "scripts": {
     "test": "bun test",
     "openapi": "bun run --filter '*' openapi",
+    "sync-docs": "bun run openapi && bun scripts/sync-specs.js",
     "lint": "bunx @biomejs/biome check .",
     "format": "bunx @biomejs/biome format --write .",
-    "ci": "bunx @biomejs/biome ci ."
+    "ci": "bunx @biomejs/biome ci .",
+    "spectral": "bunx @stoplight/spectral-cli lint -r .spectral.yaml \"*/openapi.json\""
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.2.0"
+    "@biomejs/biome": "^2.4.0"
   }
 }

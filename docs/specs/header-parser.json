@@ -1,0 +1,58 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Header Parser API",
+    "version": "2.0.0",
+    "description": "An HTTP request header parser microservice API",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    },
+    "contact": {
+      "name": "Ali Ammari",
+      "email": "ammari.ali.0001@gmail.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/api/whoami": {
+      "get": {
+        "summary": "Get requester information",
+        "description": "Returns IP address, language, and software info from request headers",
+        "responses": {
+          "200": {
+            "description": "Requester information retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ipaddress": {
+                      "type": "string",
+                      "description": "Client IP address"
+                    },
+                    "language": {
+                      "type": "string",
+                      "description": "Accepted languages"
+                    },
+                    "software": {
+                      "type": "string",
+                      "description": "User agent string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {},
+  "tags": []
+}

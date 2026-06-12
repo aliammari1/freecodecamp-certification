@@ -8,9 +8,13 @@ node_modules/
 # Uploads (file-metadata runtime)
 **/uploads/
 
-# Generated OpenAPI specs (regenerated via `bun run openapi`)
-**/openapi.json
-docs/specs/
+# Generated per-service OpenAPI specs (regenerated via `bun run openapi`).
+# The docs/specs/ copies ARE committed so the Mintlify site is self-contained.
+/exercise-tracker/openapi.json
+/file-metadata/openapi.json
+/header-parser/openapi.json
+/timestamp/openapi.json
+/url-shortener/openapi.json
 
 # Build / coverage
 coverage/
