@@ -1,0 +1,31 @@
+name: Good first issue idea
+description: Propose (or pick up) a beginner-friendly task — great for a first OSS PR.
+labels: ["good first issue", "help wanted"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        New to open source? This monorepo is a friendly place to start. Common
+        starter tasks: adding the **missing tests** for an under-covered route,
+        tightening an OpenAPI annotation, or improving a service README.
+        See [CONTRIBUTING.md](../CONTRIBUTING.md) first.
+  - type: dropdown
+    id: service
+    attributes:
+      label: Which service / area?
+      options:
+        - exercise-tracker
+        - file-metadata
+        - header-parser
+        - timestamp
+        - url-shortener
+        - docs / tooling
+    validations:
+      required: true
+  - type: textarea
+    id: task
+    attributes:
+      label: The task
+      description: What's the small, self-contained improvement?
+    validations:
+      required: true

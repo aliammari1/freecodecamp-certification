@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: freeCodeCamp forum (#Backend Development)
+    url: https://forum.freecodecamp.org/c/backend-development/15
+    about: Questions about the freeCodeCamp Back End & APIs curriculum belong here.
+  - name: Security report
+    url: https://github.com/aliammari1/freecodecamp-portfolio/security/advisories/new
+    about: Report a vulnerability privately (see SECURITY.md). Do not open a public issue.

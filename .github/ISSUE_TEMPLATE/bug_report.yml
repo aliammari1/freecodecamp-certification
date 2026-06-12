@@ -1,0 +1,39 @@
+name: Bug report
+description: Something in one of the services isn't working as expected.
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: service
+    attributes:
+      label: Which service?
+      options:
+        - exercise-tracker
+        - file-metadata
+        - header-parser
+        - timestamp
+        - url-shortener
+        - docs / tooling / monorepo-wide
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you expect, and what happened instead? Include the request/response if relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. `bun install`
+        2. `cd timestamp && bun run dev`
+        3. `curl ...`
+    validations:
+      required: true
+  - type: input
+    id: bun-version
+    attributes:
+      label: Bun version
+      placeholder: "bun --version"
