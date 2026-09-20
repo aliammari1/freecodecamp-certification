@@ -1,0 +1,8 @@
+extends: ["spectral:oas"]
+rules:
+  # These tiny FCC learning APIs don't ship contact/license per-operation tags;
+  # relax the noisiest doc-completeness rules while keeping structural OAS checks.
+  operation-tag-defined: off
+  operation-tags: off
+  info-contact: off
+  oas3-api-servers: off

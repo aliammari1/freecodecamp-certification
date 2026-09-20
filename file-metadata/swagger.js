@@ -1,28 +1,20 @@
-const swaggerJsdoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
+const swaggerJsdoc = require("swagger-jsdoc");
 
 const options = {
   definition: {
-    openapi: '3.0.0',
+    openapi: "3.0.0",
     info: {
-      title: 'File Metadata API',
-      version: '2.0.0',
-      description: 'A file metadata microservice API built with Node.js and Express',
-      contact: {
-        name: 'Ali Ammari',
-        email: 'ammari.ali.0001@gmail.com',
-      },
+      title: "File Metadata API",
+      version: "2.0.0",
+      description: "A file metadata microservice API built with Express",
+      license: { name: "MIT", url: "https://opensource.org/licenses/MIT" },
+      contact: { name: "Ali Ammari", email: "ammari.ali.0001@gmail.com" },
     },
-    servers: [
-      {
-        url: '/',
-        description: 'Development server',
-      },
-    ],
+    servers: [{ url: "/", description: "Local server" }],
   },
-  apis: ['./index.js'],
+  apis: ["./app.js"],
 };
 
 const specs = swaggerJsdoc(options);
 
-module.exports = { swaggerUi, specs };
+module.exports = { specs };

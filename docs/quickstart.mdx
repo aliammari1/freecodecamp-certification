@@ -19,29 +19,30 @@ git clone https://github.com/aliammari1/freecodecamp-portfolio.git
 cd freecodecamp-portfolio
 ```
 
-2. **Install dependencies for a specific API**
+2. **Install dependencies (one Bun workspace, one lockfile)**
 
 ```bash
-cd exercise-tracker
 bun install
 ```
 
-3. **Set up environment variables**
+3. **Set up environment variables (per service that needs them)**
 
 ```bash
-cp sample.env .env
-# Edit .env with your configuration
+# only exercise-tracker / url-shortener ship a sample.env
+cd exercise-tracker && cp sample.env .env
+# Edit .env (e.g. MONGO_URI) as needed
 ```
 
-4. **Start the development server**
+4. **Start a service in watch mode**
 
 ```bash
-bun run dev
+cd timestamp && bun run dev   # each service runs independently on PORT 3000
 ```
 
 ## API Documentation
 
-Each API includes interactive Swagger documentation. Once running, visit:
+Each API serves an interactive Scalar reference at `/api-docs` and the raw
+OpenAPI spec at `/api-docs.json`. Once running, visit:
 
 ```
 http://localhost:3000/api-docs
@@ -87,18 +88,21 @@ curl -X POST http://localhost:3000/api/shorturl \
 Each API follows the same structure:
 
 ```
-project-name/
-├── index.js          # Main Express application
-├── swagger.js        # Swagger documentation config
-├── package.json      # Dependencies and scripts
-├── bun.lock          # Bun lockfile
-├── public/           # Static assets
-├── views/            # HTML templates
-└── .env              # Environment variables
+service-name/
+├── app.js            # createApp() factory (testable, Worker-reusable)
+├── index.js          # listen-only entrypoint
+├── swagger.js        # swagger-jsdoc OpenAPI config
+├── gen-openapi.js    # writes openapi.json
+├── test/             # bun:test + supertest
+├── package.json      # dependencies and scripts
+├── public/           # static assets
+└── views/            # HTML templates
 ```
+
+> The lockfile lives at the repo root (`bun.lock`) for the whole workspace.
 
 ## Next Steps
 
 - Explore the [API Reference](/api-reference) for detailed endpoint documentation
-- Check out the interactive Swagger UI at `/api-docs` when running any API
+- Check out the interactive Scalar API reference at `/api-docs` (raw spec at `/api-docs.json`) when running any API
 - Review the source code on [GitHub](https://github.com/aliammari1/freecodecamp-portfolio)

@@ -1,0 +1,10 @@
+# wrangler.toml — Cloudflare Workers config for the Timestamp microservice.
+# This is the proof-of-concept stateless Worker (see worker.js).
+# Deploy: bunx wrangler deploy   (requires a Cloudflare account + auth)
+name = "fcc-timestamp"
+main = "worker.js"
+compatibility_date = "2025-06-01"
+compatibility_flags = ["nodejs_compat"]
+
+[observability]
+enabled = true

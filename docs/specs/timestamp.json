@@ -1,0 +1,129 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Timestamp API",
+    "version": "2.0.0",
+    "description": "A timestamp conversion microservice API",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    },
+    "contact": {
+      "name": "Ali Ammari",
+      "email": "ammari.ali.0001@gmail.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/api/hello": {
+      "get": {
+        "summary": "Hello API",
+        "description": "A simple greeting endpoint for testing",
+        "responses": {
+          "200": {
+            "description": "Greeting returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "greeting": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/{date}": {
+      "get": {
+        "summary": "Convert date to timestamp",
+        "description": "Converts a date string or Unix timestamp to both formats",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "date",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Date string (YYYY-MM-DD) or Unix timestamp"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Date converted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "unix": {
+                      "type": "integer",
+                      "description": "Unix timestamp in milliseconds"
+                    },
+                    "utc": {
+                      "type": "string",
+                      "description": "UTC date string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid date format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api": {
+      "get": {
+        "summary": "Get current timestamp",
+        "description": "Returns the current date in both Unix and UTC formats",
+        "responses": {
+          "200": {
+            "description": "Current timestamp retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "unix": {
+                      "type": "integer"
+                    },
+                    "utc": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {},
+  "tags": []
+}

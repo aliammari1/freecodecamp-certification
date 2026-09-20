@@ -1,283 +1,48 @@
+<!-- SPDX-License-Identifier: MIT -->
+
 # Exercise Tracker API
 
-A full-stack exercise tracking application built with Node.js, Express, and MongoDB as part of the freeCodeCamp Backend Development certification.
+Part of the [freeCodeCamp Backend API Portfolio](../README.md). An Express 5 +
+MongoDB service for tracking users and their exercise logs. This is the only
+**stateful** service in the monorepo.
 
-## 🚀 Features
+## Endpoints
 
-- **User Management**: Create and retrieve user accounts
-- **Exercise Logging**: Add exercises with description, duration, and date
-- **Exercise History**: View complete exercise logs for users
-- **Advanced Filtering**: Filter exercises by date range and limit results
-- **RESTful API**: Clean API endpoints following REST conventions
-- **MongoDB Integration**: Persistent data storage with Mongoose
-- **Interactive Frontend**: HTML forms for easy testing and interaction
+| Method | Path | Description |
+|---|---|---|
+| `POST` | `/api/users` | Create a user (`username`) |
+| `GET` | `/api/users` | List users |
+| `POST` | `/api/users/:_id/exercises` | Add an exercise (`description`, `duration`, `date?`) |
+| `GET` | `/api/users/:_id/logs` | Get a user's log (`?from`, `?to`, `?limit`) |
+| `GET` | `/api-docs` | Scalar interactive reference |
+| `GET` | `/api-docs.json` | Raw OpenAPI 3.0 spec |
 
-## 🛠️ Technologies Used
-
-- **Node.js**: JavaScript runtime environment
-- **Express.js**: Web framework for Node.js
-- **MongoDB**: NoSQL database for data storage
-- **Mongoose**: MongoDB object modeling for Node.js
-- **CORS**: Cross-origin resource sharing middleware
-- **dotenv**: Environment variable management
-- **HTML/CSS/JavaScript**: Frontend interface
-
-## 📋 API Endpoints
-
-### Create New User
-```http
-POST /api/users
-```
-
-**Request Body:**
-```json
-{
-  "username": "john_doe"
-}
-```
-
-**Response:**
-```json
-{
-  "username": "john_doe",
-  "_id": "507f1f77bcf86cd799439011"
-}
-```
-
-### Get All Users
-```http
-GET /api/users
-```
-
-**Response:**
-```json
-[
-  {
-    "username": "john_doe",
-    "_id": "507f1f77bcf86cd799439011"
-  },
-  {
-    "username": "jane_smith",
-    "_id": "507f1f77bcf86cd799439012"
-  }
-]
-```
-
-### Add Exercise
-```http
-POST /api/users/:_id/exercises
-```
-
-**Request Body:**
-```json
-{
-  "description": "Running",
-  "duration": 30,
-  "date": "2023-01-01"
-}
-```
-
-**Response:**
-```json
-{
-  "username": "john_doe",
-  "description": "Running",
-  "duration": 30,
-  "date": "Mon Jan 01 2023",
-  "_id": "507f1f77bcf86cd799439011"
-}
-```
-
-### Get Exercise Log
-```http
-GET /api/users/:_id/logs?[from][&to][&limit]
-```
-
-**Query Parameters:**
-- `from` (optional): Start date (YYYY-MM-DD)
-- `to` (optional): End date (YYYY-MM-DD)
-- `limit` (optional): Maximum number of exercises to return
-
-**Example:**
-```http
-GET /api/users/507f1f77bcf86cd799439011/logs?from=2023-01-01&to=2023-12-31&limit=10
-```
-
-**Response:**
-```json
-{
-  "username": "john_doe",
-  "count": 2,
-  "_id": "507f1f77bcf86cd799439011",
-  "log": [
-    {
-      "description": "Running",
-      "duration": 30,
-      "date": "Mon Jan 01 2023"
-    },
-    {
-      "description": "Cycling",
-      "duration": 45,
-      "date": "Tue Jan 02 2023"
-    }
-  ]
-}
-```
-
-## 🔧 Installation
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/aliammari1/freecodecamp-exercisetracker-project.git
-   cd freecodecamp-exercisetracker-project
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment variables:**
-   ```bash
-   cp sample.env .env
-   ```
-   
-   Edit `.env` and add your MongoDB connection string:
-   ```
-   MONGO_URI=mongodb://localhost:27017/exercise-tracker
-   PORT=3000
-   ```
-
-4. **Start the server:**
-   ```bash
-   npm start
-   ```
-
-5. **Open your browser:**
-   Navigate to `http://localhost:3000` to see the application.
-
-## 📖 Usage
-
-### Using the Web Interface
-
-1. **Create a User:**
-   - Enter a username in the "Create a New User" form
-   - Click "Submit" to create the user
-   - Note the returned user ID for adding exercises
-
-2. **Add Exercises:**
-   - Use the user ID from step 1
-   - Fill in the exercise description and duration (required)
-   - Optionally specify a date (defaults to current date)
-   - Click "Submit" to add the exercise
-
-3. **View Exercise Logs:**
-   - Use the GET endpoint format shown on the page
-   - Add query parameters for filtering as needed
-
-### Using the API Directly
+## Run
 
 ```bash
-# Create a new user
-curl -X POST http://localhost:3000/api/users \
-  -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "username=testuser"
-
-# Add an exercise
-curl -X POST http://localhost:3000/api/users/USER_ID/exercises \
-  -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "description=Running&duration=30&date=2023-01-01"
-
-# Get exercise log
-curl http://localhost:3000/api/users/USER_ID/logs
+MONGO_URI=mongodb://localhost:27017/exercises bun run start
 ```
 
-## 📁 Project Structure
+## Test
 
-```
-freecodecamp-exercisetracker-project/
-├── index.js              # Main server file with API routes
-├── package.json          # Node.js dependencies and scripts
-├── sample.env            # Environment variables template
-├── views/
-│   └── index.html        # Frontend interface
-├── public/               # Static files
-│   └── style.css         # Styling
-└── assets/               # Project assets
+```bash
+bun test
 ```
 
-## 🗃️ Database Schema
+Tests run against **`mongodb-memory-server`** — no external Mongo needed. The
+first run downloads a MongoDB binary (cached afterwards). CI attaches a `mongo:7`
+service container to this service's job only.
 
-### Log Collection
-```javascript
-{
-  username: String,
-  count: Number,
-  log: [
-    {
-      description: String,
-      duration: Number,
-      date: String
-    }
-  ]
-}
-```
+## Cloudflare D1 (demo path)
 
-## 🧪 Testing
+A [D1](https://developers.cloudflare.com/d1/) (edge SQLite) schema mirroring the
+Mongo model lives in [`migrations/`](migrations/) for the Cloudflare demo. The
+primary runtime remains MongoDB.
 
-This project is designed to pass the freeCodeCamp test suite. You can test it by:
+## What you'll learn
 
-1. Running the application locally
-2. Using the freeCodeCamp test interface to verify all requirements
-3. Testing the API endpoints manually with curl or a REST client
-4. Using the web interface to create users and add exercises
-
-## ⚠️ Environment Setup
-
-Make sure you have:
-- Node.js installed
-- MongoDB running locally or a MongoDB Atlas connection string
-- Proper environment variables configured in `.env`
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🎓 Learning Objectives
-
-This project demonstrates:
-- Building RESTful APIs with Express.js
-- MongoDB integration with Mongoose
-- Data validation and error handling
-- Date manipulation and filtering
-- CRUD operations in a web application
-- Environment variable management
-
-## 🔗 Related Projects
-
-This is part of the freeCodeCamp Backend Development and APIs certification. Other related projects include:
-- Timestamp Microservice
-- URL Shortener Microservice
-- File Metadata Microservice
-- Request Header Parser
-
-## 📞 Contact
-
-**Ali Ammari**
-- GitHub: [@aliammari1](https://github.com/aliammari1)
-- LinkedIn: [Ali Ammari](https://www.linkedin.com/in/ali-ammari-dev/)
-
----
-
-⭐ Star this repository if you found it helpful!
-
-## Repository Visualization
-![Repository Visualization](https://raw.githubusercontent.com/aliammari1/freecodecamp-exercisetracker-project/main/assets/repo_image_freecodecamp-exercisetracker-project.png)
+- Modelling nested documents with **Mongoose** (a user with an embedded `log[]`).
+- Splitting **DB connection** (`index.js`) from the **app factory** (`app.js`)
+  so handlers are testable against an in-memory Mongo.
+- Async route handlers with proper `404`s and `try/catch → next(err)`.
+- Query-param filtering (`from`/`to`/`limit`) over an embedded array.

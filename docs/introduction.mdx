@@ -32,9 +32,17 @@ This portfolio demonstrates fundamental backend development concepts through pra
 ## Features
 
 - **RESTful APIs** - Clean, predictable resource-oriented endpoints
-- **Interactive Documentation** - Swagger UI available at `/api-docs` for each service
+- **Interactive Documentation** - A Scalar API reference is available at `/api-docs` for each service, and the raw OpenAPI spec at `/api-docs.json`
 - **Cross-Origin Support** - CORS enabled for client-side testing
-- **Modern Tooling** - Migrated to Bun for fast installs and builds
+- **Modern Tooling** - Bun workspaces for fast installs, Biome for linting, bun:test for tests
+
+## Live demo
+
+The stateless **Timestamp** service runs on the **Cloudflare Workers** free tier
+(Hono on `workerd`) for an always-on, zero-cost endpoint. Deploy it with
+`cd timestamp && bunx wrangler deploy` (free Cloudflare account required). The two
+stateful services ship **Cloudflare D1** migrations for an edge demo path, while
+MongoDB / in-memory remain their primary runtimes.
 
 ## Quick Start
 
@@ -54,4 +62,4 @@ freecodecamp-portfolio/
 
 ## License
 
-This project uses a [Custom Source-Available License](https://github.com/aliammari1/freecodecamp-portfolio/blob/main/LICENSE) that allows personal, educational, and non-commercial use. Commercial use requires explicit written permission.
+This project is licensed under the [MIT License](https://github.com/aliammari1/freecodecamp-portfolio/blob/main/LICENSE) — free to use, modify, and learn from.

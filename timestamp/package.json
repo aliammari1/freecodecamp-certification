@@ -3,22 +3,29 @@
   "version": "2.0.0",
   "description": "Timestamp API microservice with Express.js",
   "main": "index.js",
-  "license": "Custom Commercial Use License",
+  "license": "MIT",
   "author": "Ali Ammari",
   "dependencies": {
+    "@scalar/express-api-reference": "^0.8.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "express-rate-limit": "^7.4.0",
+    "helmet": "^8.0.0",
+    "hono": "^4.6.0",
+    "pino-http": "^10.3.0",
+    "swagger-jsdoc": "^6.2.8"
   },
   "devDependencies": {
-    "nodemon": "^3.1.11",
-    "swagger-autogen": "^2.23.7"
+    "supertest": "^7.0.0",
+    "wrangler": "^4.0.0"
   },
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js",
-    "swagger": "node swagger-autogen.js"
+    "dev": "node --watch index.js",
+    "test": "bun test",
+    "openapi": "node gen-openapi.js",
+    "deploy": "wrangler deploy",
+    "dev:worker": "wrangler dev"
   }
 }

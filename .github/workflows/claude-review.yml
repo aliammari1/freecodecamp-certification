@@ -1,0 +1,44 @@
+name: Claude PR Review
+
+# AI code review tuned to this monorepo's real risk surfaces. Runs only when
+# ANTHROPIC_API_KEY is configured, so it is a no-op until the secret exists.
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.0
+        with:
+          fetch-depth: 0
+      - name: Claude review
+        uses: anthropics/claude-code-action@baa00e1092c6252b7f9eeb21364a432779460b17 # v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Review this PR for the freecodecamp-portfolio monorepo of five
+            Express microservices. Focus on the real risk surfaces for these
+            services and flag concrete issues only:
+
+            - file-metadata: multer path traversal — confirm the on-disk path
+              is never derived from the untrusted original filename, the upload
+              size limit stays in place, and no user input reaches fs paths.
+            - url-shortener: open redirect — confirm only http/https URLs are
+              accepted and that the redirect endpoint re-validates before
+              issuing a 302 (no javascript:/data:/file: schemes).
+            - exercise-tracker: unvalidated ObjectIds, missing 404s, and
+              error handling around Mongo calls.
+            - All services: ensure no secrets are committed, OpenAPI JSDoc
+              stays in sync with the routes, and tests still cover changes.
+
+            Keep the review tight; do not nitpick style (Biome handles that).

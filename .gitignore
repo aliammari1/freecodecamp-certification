@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+*.local
+
+# Uploads (file-metadata runtime)
+**/uploads/
+
+# Generated per-service OpenAPI specs (regenerated via `bun run openapi`).
+# The docs/specs/ copies ARE committed so the Mintlify site is self-contained.
+/exercise-tracker/openapi.json
+/file-metadata/openapi.json
+/header-parser/openapi.json
+/timestamp/openapi.json
+/url-shortener/openapi.json
+
+# Build / coverage
+coverage/
+*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Cloudflare
+.wrangler/
+.dev.vars
+
+# Internal growth/marketing notes (not for public)
+GROWTH.md
+BANNER.md
+SUBMITTING_TO_AWESOME.md
+launch-kit.md
+star-strategy.md
+modernization-backlog.md

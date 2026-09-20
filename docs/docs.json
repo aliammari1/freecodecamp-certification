@@ -1,0 +1,76 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "FreeCodeCamp Portfolio",
+  "colors": {
+    "primary": "#0A0A23",
+    "light": "#D0D0D5",
+    "dark": "#0A0A23"
+  },
+  "favicon": "/favicon.png",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": ["introduction", "quickstart"]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Microservices",
+            "pages": [
+              "api-reference/exercise-tracker",
+              "api-reference/file-metadata",
+              "api-reference/header-parser",
+              "api-reference/timestamp",
+              "api-reference/url-shortener"
+            ]
+          },
+          {
+            "group": "Exercise Tracker",
+            "openapi": "specs/exercise-tracker.json"
+          },
+          {
+            "group": "File Metadata",
+            "openapi": "specs/file-metadata.json"
+          },
+          {
+            "group": "Header Parser",
+            "openapi": "specs/header-parser.json"
+          },
+          {
+            "group": "Timestamp",
+            "openapi": "specs/timestamp.json"
+          },
+          {
+            "group": "URL Shortener",
+            "openapi": "specs/url-shortener.json"
+          }
+        ]
+      }
+    ]
+  },
+  "logo": {
+    "light": "https://img.shields.io/badge/FreeCodeCamp-0A0A23?style=for-the-badge&logo=freecodecamp",
+    "dark": "https://img.shields.io/badge/FreeCodeCamp-0A0A23?style=for-the-badge&logo=freecodecamp"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "GitHub",
+        "href": "https://github.com/aliammari1/freecodecamp-portfolio"
+      }
+    ]
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/aliammari1"
+    }
+  }
+}
